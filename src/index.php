@@ -16,7 +16,7 @@ $cors->setAllowedOrigin("*");
 
 $cors->configure();
 
-Env::load();
+Env::load(".env.production");
 
 header("Content-Type: application/json");
 
