@@ -2,6 +2,7 @@
 
 use KpEsportes\App\Domain\Cors;
 use KpEsportes\App\Domain\Router;
+use KpEsportes\App\Util\Env;
 
 require_once __DIR__ . "/vendor/autoload.php";
 require_once __DIR__ . "/app/Domain/Routes/api.php";
@@ -13,6 +14,8 @@ $cors->setAllowedHeaders("*");
 $cors->setAllowedOrigin("*");
 
 $cors->configure();
+
+Env::load();
 
 header("Content-Type: application/json");
 
