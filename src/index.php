@@ -2,7 +2,6 @@
 
 use KpEsportes\App\Domain\Cors;
 use KpEsportes\App\Domain\Router;
-use KpEsportes\App\Http\Request;
 use KpEsportes\App\Util\Env;
 
 require_once(__DIR__ . "/vendor/autoload.php");
@@ -16,7 +15,14 @@ $cors->setAllowedOrigin("*");
 
 $cors->configure();
 
-Env::load(".env.production");
+$env_file = ".env";
+
+if ($_ENV["APP_ENV"] == "test")
+    $env_file .= ".test";
+if ($_ENV["APP_ENV"] == "production")
+    $env_file .= ".production";
+
+Env::load($env_file);
 
 header("Content-Type: application/json");
 
