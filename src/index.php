@@ -2,6 +2,7 @@
 
 use KpEsportes\App\Domain\Cors;
 use KpEsportes\App\Domain\Router;
+use KpEsportes\App\Http\Request;
 use KpEsportes\App\Util\Env;
 
 require_once __DIR__ . "/vendor/autoload.php";
