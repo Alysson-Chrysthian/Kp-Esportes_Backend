@@ -5,8 +5,8 @@ use KpEsportes\App\Domain\Router;
 use KpEsportes\App\Http\Request;
 use KpEsportes\App\Util\Env;
 
-require_once __DIR__ . "/vendor/autoload.php";
-require_once __DIR__ . "/app/Domain/Routes/api.php";
+require_once(__DIR__ . "/vendor/autoload.php");
+require_once(__DIR__ . "/app/Domain/Routes/api.php");
 
 $cors = new Cors;
 
