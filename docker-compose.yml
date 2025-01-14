@@ -1,0 +1,27 @@
+services:
+
+  server:
+    build: .
+    ports:
+      - 8080:80
+    volumes:
+      - ./src/:/var/www/html/
+    networks:
+      - app_network
+
+  db:
+    image: mysql
+    ports:
+      - 3306:3306
+    volumes: 
+      - ./datadir/mysql/:/var/lib/mysql/
+    networks:
+      - app_network
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: kp_esportes
+
+networks:
+  
+  app_network:
+    driver: bridge
