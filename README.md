@@ -12,3 +12,19 @@ Esse projeto é um freela fruto de uma parceria entre eu e meu amigo Lucas_Paz, 
 <img src="./docs/uml/Kp_Esportes_UML_UseCase.png" />
 
 <h1>Endpoints</h1>
+
+<h2>Authentication</h2>
+<h3>/api/auth/admin/sendVerificationMail - POST</h3>
+<p>Esta rota é utilizada para um email email para a caixa de entrada da pessoa que esta querendo se registrar como administrador, as informaçoes do admin e seu token de verificaçao serao salvos na tabela validation_email_tokens</p>
+<ul>
+    <li>name - Obrigatorio, minimo de 3 carecteres, maximo de 20</li>
+    <li>email - Obrigatorio, email valido, precisa ser unica na tabela de admins</li>
+    <li>password - Obrigatorio, minimo de 8 caracteres, maximo de 16</li>
+</ul>
+
+<h3>/api/auth/admin/verifyEmail - GET</h3>
+<p>Ao enviar um email de verificaçao de email ele ira junto com esse link ao admin clicar no link o email dele sera verificado e ele sera cadastrado no banco de dados</p>
+<ul>
+    <li>token - Obrigatorio, precisa existir na tabela validation_mail_tokens</li>
+    <li>email - Obrigatorio, precisa ser um email valido e existir na tabela validation_email_tokens</li>
+</ul>
