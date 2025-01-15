@@ -33,6 +33,11 @@ class SqlDatabase extends Database {
         return $result;
     }
 
+    public function fetchFirst(string $query, string $class = null, array $binds = null) {
+        $result = $this->fetch($query, $class, $binds);
+        return isset($result[0]) ? $result[0] : null;
+    }
+
     public function persist(string $query, array $binds = null) {
         $prepared_statement = $this->conn->prepare($query);
         $rows = $prepared_statement->execute($binds);

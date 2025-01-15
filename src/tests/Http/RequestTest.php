@@ -7,9 +7,6 @@ class RequestTest extends TestCase {
 
     protected function setUp() : void {
         $_REQUEST["email"] = "mymail@mail.com";
-        function getallheaders() {
-            return [];
-        }
     }
 
     public function testCanGetInput() {    

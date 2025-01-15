@@ -8,7 +8,7 @@ class Request {
     protected array $headers;
 
     public function __construct() {
-        $this->headers = getallheaders();
+        $this->headers = $this->getRequestHeaders();
         $this->body = $this->getInputStream();
 
         if ($this->body == null)
@@ -18,15 +18,22 @@ class Request {
     }
 
     public function getInput(string $name) {
-        return $this->body[$name];
+        return isset($this->body[$name]) ? $this->body[$name] : null;
     }
 
     public function getHeader(string $name) {
-        return $this->headers[$name];
+        return isset($this->headers[$name]) ? $this->headers[$name] : null;
     }
 
     public function getInputStream() {
         return json_decode(file_get_contents("php://input"), true);
+    }
+
+    public function getRequestHeaders() {
+        if (function_exists("getallheaders"))
+            return getallheaders();
+        else
+            return [];
     }
 
     public function getBody() {

@@ -4,6 +4,8 @@ namespace KpEsportes\App\Util;
 
 use Exception;
 use KpEsportes\App\Http\Request;
+use KpEsportes\App\Storage\SqlDatabase;
+use stdClass;
 
 class Validator {
 
@@ -66,6 +68,20 @@ class Validator {
             throw new Exception("O campo $field_name precisa ter no minimo $max_length caracters");
         if (is_numeric($value) && $value > $max_length)
             throw new Exception("O campo $field_name precisa ser um numero maior do que $max_length");
+    }
+
+    protected function unique(mixed $value, string $field_name, string $table, string $column_name) {
+        $db = new SqlDatabase;
+        $db->connect();
+
+        $result = $db->fetch("SELECT * FROM $table WHERE $column_name ~* :value", stdClass::class, [
+            "value" => $value,
+        ]);
+
+        $db->close();
+
+        if (count($result) > 0)
+            throw new Exception("Este $field_name ja esta cadastrado");
     }
 
 }
