@@ -84,4 +84,22 @@ class Validator {
             throw new Exception("Este $field_name ja esta cadastrado");
     }
 
+    protected function url(mixed $value, string $field_name) {
+        if (!filter_var($value, FILTER_VALIDATE_URL) && !filter_var($value, FILTER_VALIDATE_IP))
+            throw new Exception("O campo $field_name não é uma url valida");
+    }
+
+    protected function exist(mixed $value, string $field_name, string $table, string $column_name) {
+        $db = new SqlDatabase;
+        $db->connect();
+
+        $result = $db->fetch("SELECT * FROM $table WHERE $column_name ~* :value", stdClass::class, [
+            "value" => $value,
+        ]);
+
+        $db->close();
+
+        if (!count($result) > 0)
+            throw new Exception("Este $field_name não existe, por favor tente novamente");
+    }
 }

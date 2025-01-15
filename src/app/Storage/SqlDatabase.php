@@ -34,8 +34,12 @@ class SqlDatabase extends Database {
     }
 
     public function fetchFirst(string $query, string $class = null, array $binds = null) {
-        $result = $this->fetch($query, $class, $binds);
-        return isset($result[0]) ? $result[0] : null;
+        $prepared_statement = $this->conn->prepare($query);
+        $prepared_statement->execute($binds);
+        $prepared_statement->setFetchMode(PDO::FETCH_CLASS, $class);
+        $result = $prepared_statement->fetch();
+
+        return $result ? $result : null;
     }
 
     public function persist(string $query, array $binds = null) {
