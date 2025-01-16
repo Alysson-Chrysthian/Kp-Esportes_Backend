@@ -43,7 +43,7 @@ Esse projeto é um freela fruto de uma parceria entre eu e meu amigo Lucas_Paz, 
 <p>Serve para deletar uma categoria, o id da categoria a ser deletada deve ser passada na uri, ao deletar uma categoria todos os produtos associados a ela tambem serao deletados</p>
 <ul>
     <li>id - Obrigatorio, deve ser numerico, deve existir na tabela categories</li>
-<ul>
+</ul>
 
 <h3>/api/category/all - GET</h3>
 <p>Retorna todas as categorias</p>
@@ -53,4 +53,4 @@ Esse projeto é um freela fruto de uma parceria entre eu e meu amigo Lucas_Paz, 
 <ul>
     <li>id - Obrigatorio, numerico, e precisa existir na tabela categories</li>
     <li>name - Obrigatorio, minimo de 3 caracteres maximo de 25, e deve ser unico na tabela categories</li>
-<ul>
+</ul>
