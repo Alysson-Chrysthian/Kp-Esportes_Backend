@@ -34,6 +34,7 @@ class Validator {
                     call_user_func_array([$validation_handler, $rule_name], $args);
                 } catch (Exception $error) {
                     $errors[$field_name] = $error->getMessage();
+                    continue;
                 }
             }
         }        
