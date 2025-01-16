@@ -21,7 +21,7 @@ class ValidationMail extends MailTemplate {
 
     protected static function getBody($validation_mail_token_model) {
         $user_name = self::$request->getInput("name");
-        $url = Env::get("APP_URL") . "/api/auth/admin/verifyEmail" . "?token=" . $validation_mail_token_model->token . "&email=" . $validation_mail_token_model->email;
+        $url = Env::get("FRONTEND_URL") . "/verifyemail" . "?token=" . $validation_mail_token_model->token . "&email=" . $validation_mail_token_model->email;
 
         return "
            <div style='font-family: Arial, sans-serif; line-height: 1.5; text-align: center;'>
