@@ -5,6 +5,7 @@ use KpEsportes\App\Domain\Model\ValidationMailToken;
 use KpEsportes\App\Http\Controller\AdminController;
 use KpEsportes\App\Storage\SqlDatabase;
 use KpEsportes\App\Util\Env;
+use KpEsportes\App\Util\JWT;
 use PHPUnit\Framework\Attributes\Depends;
 use PHPUnit\Framework\TestCase;
 
@@ -56,18 +57,18 @@ class AdminControllerTest extends TestCase {
         ];
 
         $adminController = new AdminController;
-        $adminController->verifyEmail();
+        $response = $adminController->verifyEmail();
 
-        $admin = $db->fetchFirst("SELECT * FROM admins WHERE email = :email", Admin::class, [
-            "email" => "alyssonchrysthian@gmail.com",
-        ]);
         $token = $db->fetchFirst("SELECT * FROM validation_mail_tokens WHERE email = :email", ValidationMailToken::class, [
             "email" => "alyssonchrysthian@gmail.com"
         ]);
 
+        $jwt = new JWT;
+        $admin = $jwt->decodeToken($response["token"]);
+
         $db->close();
     
-        $this->assertIsObject($admin);   
+        $this->assertEquals("alyssonchrysthian@gmail.com", $admin["email"]);
         $this->assertNull($token);
     }
 

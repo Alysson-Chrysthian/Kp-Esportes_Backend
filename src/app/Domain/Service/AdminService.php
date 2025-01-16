@@ -15,21 +15,4 @@ class AdminService extends Service {
         $this->db = new SqlDatabase;
     }
 
-    public function save(Admin $admin) {
-        $this->db->connect();
-
-        $this->db->persist("
-            INSERT INTO " . $this->table . "(name, email, password, created_at, updated_at)
-            VALUES(:name, :email, :password, :created_at, :updated_at)
-        ", [
-            "name" => $admin->name,
-            "email" => $admin->email,
-            "password" => $admin->password,
-            "created_at" => Date::now()->format(),
-            "updated_at" => Date::now()->format(),
-        ]);
-
-        $this->db->close();
-    }
-
 }

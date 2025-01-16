@@ -10,6 +10,7 @@ use KpEsportes\App\Domain\Service\ValidationMailTokenService;
 use KpEsportes\App\Http\Mail\ValidationMail;
 use KpEsportes\App\Http\Request;
 use KpEsportes\App\Util\Hash;
+use KpEsportes\App\Util\JWT;
 use KpEsportes\App\Util\Mail;
 use KpEsportes\App\Util\Validator;
 
@@ -71,18 +72,15 @@ class AdminController extends Controller {
             throw new Exception("O pedido para validação de email ja expirou, por favor tente novamente", 401);
 
         $admin_info = json_decode($validationMailToken->user_info, true);
-        
-        $admin = new Admin;
+        $jwt = new JWT;
 
-        $admin->name = $admin_info["name"];
-        $admin->email = $admin_info["email"];
-        $admin->password = $admin_info["password"];
+        $token = $jwt->createToken($admin_info);
 
-        $this->adminService->save($admin);
         $this->validationMailTokenService->deleteByEmail($this->request->getInput("email"));
         
         return [
             "message" => "O admin foi cadastrado com sucesso por favor volte para o app e faça o login",
+            "token" => $token,
         ];
     }
 
