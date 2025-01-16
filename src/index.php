@@ -15,7 +15,7 @@ $cors->setAllowedOrigin("*");
 
 $cors->configure();
 
-$env_file = ".env.production";
+$env_file = ".env";
 
 if (isset($_ENV["APP_ENV"])) {
     if ($_ENV["APP_ENV"] == "test")
