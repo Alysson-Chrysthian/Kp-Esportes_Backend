@@ -15,9 +15,9 @@ class AdminControllerTest extends TestCase {
     public string $token = "";
 
     protected function setUp() : void {
-        if (!extension_loaded("pgsql"))
-            $this->markTestSkipped();
         Env::load(".env.test");
+        if (!extension_loaded(Env::get("DB_DRIVER")))
+            $this->markTestSkipped();
         date_default_timezone_set(Env::get("TIMEZONE"));
         
         $db = new SqlDatabase;

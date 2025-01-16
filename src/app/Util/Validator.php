@@ -9,19 +9,19 @@ use stdClass;
 
 class Validator {
 
-    public static function validate(array $validation_fields_and_rules, array|null $validation_fields = null) {
+    public static function validate(array $validation_fields_and_rules, array|null $validation_fields = []) {
+        $request = new Request;
         $fields = $validation_fields;
-
-        if ($fields == null) {
-            $request = new Request;
-            $fields = $request->getBody();
-        }
+        $value = null;
 
         $validation_handler = new Validator;
         $errors = [];
 
         foreach($validation_fields_and_rules as $field_name => $rules) {
-            $value = isset($fields[$field_name]) ? $fields[$field_name] : null;
+            if (isset($fields[$field_name])) 
+                $value = $fields[$field_name];
+            elseif ($request->getInput($field_name) != null)
+                $value = $request->getInput($field_name);
 
             foreach ($rules as $rule) {
                 $rule_name = explode(":", $rule)[0];
@@ -71,13 +71,21 @@ class Validator {
             throw new Exception("O campo $field_name precisa ser um numero maior do que $max_length");
     }
 
-    protected function unique(mixed $value, string $field_name, string $table, string $column_name) {
+    protected function unique(mixed $value, string $field_name, string $table, string $column_name, string $exception_column=null, mixed $exception_value=null) {
         $db = new SqlDatabase;
         $db->connect();
 
-        $result = $db->fetch("SELECT * FROM $table WHERE $column_name ~* :value", stdClass::class, [
+        $query = "SELECT * FROM $table WHERE $column_name = :value";
+        $binds = [
             "value" => $value,
-        ]);
+        ];
+
+        if ($exception_column != null && $exception_value != null) {
+            $query .= " AND $exception_column != :exception_value";
+            $binds["exception_value"] = $exception_value;
+        }
+
+        $result = $db->fetch($query, stdClass::class, $binds);
 
         $db->close();
 
@@ -106,4 +114,10 @@ class Validator {
         if (count($result) <= 0)
             throw new Exception("Este $field_name não existe, por favor tente novamente");
     }
+
+    protected function numeric(mixed $value, string $field_name) {
+        if (!is_numeric($value))
+            throw new Exception("O $field_name precisa ser um valor numerico");
+    }
+
 }

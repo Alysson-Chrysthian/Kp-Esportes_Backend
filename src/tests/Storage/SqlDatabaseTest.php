@@ -8,10 +8,9 @@ use PHPUnit\Framework\TestCase;
 class SqlDatabaseTest extends TestCase {
 
     protected function setUp() : void {
-        if (!extension_loaded("pgsql"))
-            $this->markTestSkipped();
-
         Env::load(".env.test");
+        if (!extension_loaded(Env::get("DB_DRIVER")))
+            $this->markTestSkipped();
     }
 
     public function testCanConnectToDatabase() {

@@ -16,10 +16,11 @@ class JWT {
     }
 
     public function createToken(array $payload) {
-        return JWTToken::encode($payload, $this->key, $this->alg);
+        return  JWTToken::encode($payload, $this->key, $this->alg);
     }
 
     public function decodeToken(string $token) {
+        $token = str_replace("Bearer ", "", $token);
         return (array) JWTToken::decode($token, new Key($this->key, $this->alg));
     }
 
