@@ -34,7 +34,7 @@ class Validator {
                     call_user_func_array([$validation_handler, $rule_name], $args);
                 } catch (Exception $error) {
                     $errors[$field_name] = $error->getMessage();
-                    continue;
+                    break;
                 }
             }
         }        
@@ -103,7 +103,7 @@ class Validator {
 
         $db->close();
 
-        if (!count($result) > 0)
+        if (count($result) <= 0)
             throw new Exception("Este $field_name não existe, por favor tente novamente");
     }
 }
