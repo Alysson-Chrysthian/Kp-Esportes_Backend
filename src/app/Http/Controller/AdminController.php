@@ -30,7 +30,7 @@ class AdminController extends Controller {
         Validator::validate([
             "email" => ["required", "email", "exist:admins,email"],
             "name" => ["required", "min:3", "max:20"],
-            "password" => ["required", "min:8", "max:16"],
+            "password" => ["required", "min:8", "max:16", "exist:admin,password"],
         ]);
 
         $validationMailToken = new ValidationMailToken;

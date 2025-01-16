@@ -94,6 +94,9 @@ class Validator {
         $db = new SqlDatabase;
         $db->connect();
 
+        if ($field_name == "password") 
+            $value = Hash::make($value);
+
         $result = $db->fetch("SELECT * FROM $table WHERE $column_name ~* :value", stdClass::class, [
             "value" => $value,
         ]);
