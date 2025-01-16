@@ -34,6 +34,13 @@ class CategoryService extends Service {
     public function deleteByName(string $name) {
         $this->db->connect();
 
+        $category = $this->db->fetchFirst("SELECT * FROM " . $this->table . " WHERE name = :name", Category::class, [
+            "name" => $name,
+        ]);
+        
+        $this->db->persist("DELETE FROM products WHERE category_id = :id", [
+            "id" => $category->category_id,
+        ]);
         $rowsAffected = $this->db->persist("DELETE FROM " . $this->table . " WHERE name = :name", [
             "name" => $name,
         ]);
@@ -46,6 +53,9 @@ class CategoryService extends Service {
     public function deleteById(int $id) {
         $this->db->connect();
 
+        $this->db->persist("DELETE FROM products WHERE category_id = :id", [
+            "id" => $id,
+        ]);
         $rowsAffected = $this->db->persist("DELETE FROM " . $this->table . " WHERE category_id = :id", [
             "id" => $id,
         ]);
