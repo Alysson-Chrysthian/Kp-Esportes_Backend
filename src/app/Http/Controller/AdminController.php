@@ -28,7 +28,7 @@ class AdminController extends Controller {
 
     public function sendValidationMail() {
         Validator::validate([
-            "email" => ["required", "email", "unique:admins,email"],
+            "email" => ["required", "email", "exist:admins,email"],
             "name" => ["required", "min:3", "max:20"],
             "password" => ["required", "min:8", "max:16"],
         ]);
@@ -79,7 +79,7 @@ class AdminController extends Controller {
         $this->validationMailTokenService->deleteByEmail($this->request->getInput("email"));
         
         return [
-            "message" => "O admin foi cadastrado com sucesso por favor volte para o app e faça o login",
+            "message" => "O admin foi logado com sucesso por favor volte para o app e faça o login",
             "token" => $token,
         ];
     }
