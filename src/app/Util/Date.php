@@ -10,7 +10,7 @@ class Date {
         $this->timestamp = $timestamp ?? time();
     }
 
-    public function format(string $format = "Y-m-d h:i:s") {
+    public function format(string $format = "Y-m-d H:i:s") {
         return date($format, $this->timestamp);
     }
 

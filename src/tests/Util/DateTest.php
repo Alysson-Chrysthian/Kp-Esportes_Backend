@@ -6,8 +6,8 @@ use PHPUnit\Framework\TestCase;
 class DateTest extends TestCase {
 
     public function testCanAddHours() {
-        $hours = (int) Date::now()->addHours(2)->format("h");
-        $this->assertTrue($hours == (int) date("h") + 2);
+        $hours = (int) Date::now()->addHours(2)->format("H");
+        $this->assertTrue($hours == (int) date("H") + 2);
     }
 
 }

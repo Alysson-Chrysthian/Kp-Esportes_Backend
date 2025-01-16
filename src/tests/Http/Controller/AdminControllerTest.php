@@ -5,6 +5,7 @@ use KpEsportes\App\Domain\Model\ValidationMailToken;
 use KpEsportes\App\Http\Controller\AdminController;
 use KpEsportes\App\Storage\SqlDatabase;
 use KpEsportes\App\Util\Env;
+use KpEsportes\App\Util\Hash;
 use KpEsportes\App\Util\JWT;
 use PHPUnit\Framework\Attributes\Depends;
 use PHPUnit\Framework\TestCase;
@@ -18,6 +19,20 @@ class AdminControllerTest extends TestCase {
             $this->markTestSkipped();
         Env::load(".env.test");
         date_default_timezone_set(Env::get("TIMEZONE"));
+        
+        $db = new SqlDatabase;
+        $db->connect();
+
+        $db->persist("DELETE FROM admins WHERE email = :email", [
+            "email" => "alyssonchrysthian@gmail.com",
+        ]);
+        $db->persist("INSERT INTO admins(name, email, password) VALUES(:name, :email, :password)", [
+            "name" => "alysson",
+            "email" => "alyssonchrysthian@gmail.com",
+            "password" => Hash::make("mypassword"),
+        ]);
+
+        $db->close();
     }
 
     public function testCanSendEmailVerificationMessage() {

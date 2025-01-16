@@ -31,7 +31,7 @@ services:
     networks:
       - app_network
     environment:
-      POSTGRES_PASSWORD: 1234
+      POSTGRES_PASSWORD: I0mcSMsrGWKB2uQqhDFZ4L2MRtStddzG
       POSTGRES_USER: kp_esportes
       POSTGRES_DB: kp_esportes
 

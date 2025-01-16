@@ -18,12 +18,10 @@ class AdminController extends Controller {
 
     public Request $request;
     public ValidationMailTokenService $validationMailTokenService;
-    public AdminService $adminService;
 
     public function __construct() {
         $this->request = new Request;
         $this->validationMailTokenService = new ValidationMailTokenService;
-        $this->adminService = new AdminService;
     }
 
     public function sendValidationMail() {
