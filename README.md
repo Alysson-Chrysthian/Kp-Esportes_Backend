@@ -32,3 +32,25 @@ Esse projeto é um freela fruto de uma parceria entre eu e meu amigo Lucas_Paz, 
     <li>token - Obrigatorio, precisa existir na tabela validation_mail_tokens</li>
     <li>email - Obrigatorio, precisa ser um email valido e existir na tabela validation_email_tokens</li>
 </ul>
+
+<h3>/api/category/add - POST</h3>
+<p>Esta rota serve para adicionar uma categoria</p>
+<ul>
+    <li>name - Obrigatorio, minimo de 3 caracteres maximo de 25, e deve ser o unico na tabela categories</li>
+</ul>
+
+<h3>/api/category/delete/{id} - DELETE</h3>
+<p>Serve para deletar uma categoria, o id da categoria a ser deletada deve ser passada na uri, ao deletar uma categoria todos os produtos associados a ela tambem serao deletados</p>
+<ul>
+    <li>id - Obrigatorio, deve ser numerico, deve existir na tabela categories</li>
+<ul>
+
+<h3>/api/category/all - GET</h3>
+<p>Retorna todas as categorias</p>
+
+<h3>/api/category/update/{id} - PUT</h3>
+<p>Atualiza as informaçoes da categoria que tem o id igual ao id passado como parametro na uri</p>
+<ul>
+    <li>id - Obrigatorio, numerico, e precisa existir na tabela categories</li>
+    <li>name - Obrigatorio, minimo de 3 caracteres maximo de 25, e deve ser unico na tabela categories</li>
+<ul>
