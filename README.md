@@ -33,6 +33,8 @@ Esse projeto é um freela fruto de uma parceria entre eu e meu amigo Lucas_Paz, 
     <li>email - Obrigatorio, precisa ser um email valido e existir na tabela validation_email_tokens</li>
 </ul>
 
+<h2>Categories</h2>
+
 <h3>/api/category/add - POST</h3>
 <p>Esta rota serve para adicionar uma categoria</p>
 <ul>
