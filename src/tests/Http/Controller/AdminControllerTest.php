@@ -16,7 +16,7 @@ class AdminControllerTest extends TestCase {
 
     protected function setUp() : void {
         Env::load(".env.test");
-        if (!extension_loaded(Env::get("DB_DRIVER")))
+        if (!extension_loaded("pgsql"))
             $this->markTestSkipped();
         date_default_timezone_set(Env::get("TIMEZONE"));
         

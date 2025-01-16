@@ -14,7 +14,7 @@ class CategoryControllerTest extends TestCase {
 
     protected function setUp() : void {
         Env::load(".env.test");
-        if (!extension_loaded(Env::get("DB_DRIVER")))
+        if (!extension_loaded("pgsql"))
             $this->markTestSkipped();
     }
 
