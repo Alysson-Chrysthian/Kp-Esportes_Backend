@@ -10,14 +10,17 @@ Env::load(".env.test");
 $db = new SqlDatabase;
 $db->connect();
 
-$migrations_directory = scandir(__DIR__);
+$database_driver = Env::get("DB_DRIVER");
+$dir = __DIR__ . "/" . $database_driver;
+
+$migrations_directory = scandir($dir);
 $migrations_directory = array_reverse($migrations_directory);
 
 foreach ($migrations_directory as $filename) {
     if (!str_ends_with($filename, ".sql"))
         continue;
     
-    $query = file_get_contents(__DIR__ . "/" . $filename);
+    $query = file_get_contents($dir . "/" . $filename);
     preg_match("#CREATE TABLE IF NOT EXISTS ([A-z]{1,})#", $query, $matches);
     array_shift($matches);
 

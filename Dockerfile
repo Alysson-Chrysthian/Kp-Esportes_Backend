@@ -16,7 +16,7 @@ RUN vendor/bin/phpunit tests
 
 RUN apt update
 RUN apt install -y libpq-dev
-RUN docker-php-ext-install pdo pdo_pgsql pgsql
+RUN docker-php-ext-install pdo pdo_pgsql pgsql pdo_mysql
 RUN a2enmod rewrite
 
 EXPOSE 80
