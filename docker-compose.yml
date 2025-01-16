@@ -21,6 +21,19 @@ services:
       MYSQL_ROOT_PASSWORD: 1234
       MYSQL_DATABASE: kp_esportes
 
+  db_pgsql:
+    image: postgresql
+    ports:
+      - 5432:5432
+    volumes: 
+      - ./datadir/pgsql/:/var/lib/pgsql/
+    networks:
+      - app_network
+    environment:
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_USER: kp_esportes
+      POSTGRES_DB: kp_esportes
+
 networks:
   
   app_network:
