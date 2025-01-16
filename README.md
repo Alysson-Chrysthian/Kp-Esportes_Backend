@@ -23,7 +23,7 @@ Esse projeto é um freela fruto de uma parceria entre eu e meu amigo Lucas_Paz, 
 </ul>
 
 <h3>/api/auth/admin/verifyEmail - GET</h3>
-<p>Ao enviar um email de verificaçao de email ele ira junto com esse link ao admin clicar no link o email dele sera verificado e ele sera cadastrado no banco de dados</p>
+<p>Ao enviar um email de verificaçao de email ele ira junto com esse link ao admin clicar no link o email dele sera verificado e ele sera logado</p>
 <ul>
     <li>token - Obrigatorio, precisa existir na tabela validation_mail_tokens</li>
     <li>email - Obrigatorio, precisa ser um email valido e existir na tabela validation_email_tokens</li>
