@@ -29,7 +29,7 @@ class AdminController extends Controller {
     public function sendValidationMail() {
         Validator::validate([
             "email" => ["required", "email", "exist:admins,email"],
-            "name" => ["required", "min:3", "max:20"],
+            "name" => ["required", "min:3", "max:20", "exist:admins,name"],
             "password" => ["required", "min:8", "max:16", "exist:admins,password"],
         ]);
 
