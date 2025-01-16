@@ -15,7 +15,7 @@ Esse projeto é um freela fruto de uma parceria entre eu e meu amigo Lucas_Paz, 
 
 <h2>Authentication</h2>
 <h3>/api/auth/admin/sendVerificationMail - POST</h3>
-<p>Esta rota é utilizada para um email email para a caixa de entrada da pessoa que esta querendo se registrar como administrador, as informaçoes do admin e seu token de verificaçao serao salvos na tabela validation_email_tokens</p>
+<p>Esta rota é utilizada para um email email para a caixa de entrada da pessoa que esta querendo logar se como administrador, as informaçoes do admin e seu token de verificaçao serao salvos na tabela validation_email_tokens</p>
 <ul>
     <li>name - Obrigatorio, minimo de 3 carecteres, maximo de 20</li>
     <li>email - Obrigatorio, email valido, precisa ser unica na tabela de admins</li>
