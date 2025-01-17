@@ -7,16 +7,8 @@ use KpEsportes\App\Util\Env;
 require_once(__DIR__ . "/vendor/autoload.php");
 require_once(__DIR__ . "/app/Domain/Routes/api.php");
 
-$env_file = ".env";
-
-if (isset($_ENV["APP_ENV"])) {
-    if ($_ENV["APP_ENV"] == "test")
-        $env_file .= ".test";
-    if ($_ENV["APP_ENV"] == "production")
-        $env_file .= ".production";
-}
-
-Env::load($env_file);
+if (Env::get("APP_ENV") == null)
+    Env::load();
 
 $cors = new Cors;
 

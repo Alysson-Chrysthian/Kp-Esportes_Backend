@@ -12,7 +12,7 @@ class Env {
     }
 
     public static function get(string $name) {
-        return $_ENV[$name];
+        return isset($_ENV[$name]) ? $_ENV[$name] : null;
     }
 
 }
