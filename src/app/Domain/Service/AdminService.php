@@ -16,14 +16,20 @@ class AdminService extends Service {
 
     public function findByEmail(string $email) {
         $this->db->connect();
-        
         $admin = $this->db->fetchFirst("SELECT * FROM " . $this->table . " WHERE email = :email", Admin::class, [
             "email" => $email,
         ]);
-
         $this->db->close();
 
         return $admin;
+    }
+
+    public function existWhere(string $where_clause, array $binds) {
+        $this->db->connect();
+        $admin = $this->db->fetchFirst("SELECT * FROM admins WHERE $where_clause", Admin::class, $binds);
+        $this->db->close();
+
+        return $admin == null ? false : true;
     }
 
 }

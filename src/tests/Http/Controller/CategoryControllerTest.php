@@ -1,5 +1,7 @@
 <?php declare(strict_types=1);
 
+use KpEsportes\App\Domain\Model\Admin;
+use KpEsportes\App\Domain\Model\Category;
 use KpEsportes\App\Domain\Service\CategoryService;
 use KpEsportes\App\Http\Controller\CategoryController;
 use KpEsportes\App\Http\Request;
@@ -12,78 +14,127 @@ use PHPUnit\Framework\TestCase;
 
 class CategoryControllerTest extends TestCase {
 
-    protected function setUp() : void {
+    private CategoryController $categoryController;
+    private SqlDatabase $sqlDatabase;
+    private JWT $jwt;
+    private CategoryService $categoryService;
+
+    private string $adminName;
+    private string $adminEmail;
+    private string $adminPassword;
+
+    private Admin $admin;
+
+    protected function setUp(): void {
         Env::load(".env.test");
-        if (!extension_loaded("pgsql"))
+        if (!extension_loaded("pgsql")) 
             $this->markTestSkipped();
+
+        $this->categoryController = new CategoryController;
+        $this->sqlDatabase = new SqlDatabase;
+        $this->jwt = new JWT;
+        $this->categoryService = new CategoryService;
+    
+        $this->adminName = "admin";
+        $this->adminEmail = "admin@admin.com";
+        $this->adminPassword = "adminpassword";
+
+        $this->sqlDatabase->connect();
+
+        $this->sqlDatabase->persist("INSERT INTO admins(name, email, password) VALUES(:name, :email, :password)", [
+            "name" => $this->adminName,
+            "email" => $this->adminEmail,
+            "password" => Hash::make($this->adminPassword)
+        ]);
+
+        $this->admin = $this->sqlDatabase->fetchFirst("SELECT * FROM admins WHERE name = :name AND email = :email", Admin::class, [
+            "name" => $this->adminName,
+            "email" => $this->adminEmail,
+        ]);
+    }
+
+    protected function tearDown(): void {
+        $this->resetData();
+        $this->sqlDatabase->close();
+    }
+    
+    private function resetData() {
+        $this->sqlDatabase->persist("DELETE FROM categories WHERE name = :name OR name = :second_name", ["name" => "sapatos", "second_name" => "tenis"]);
+        $this->sqlDatabase->persist("DELETE FROM admins WHERE email = :email", ["email" => $this->adminEmail]);
+    }
+
+    private function createToken() {
+        return $this->jwt->createToken(["email" => $this->adminEmail]);
     }
 
     public function testCanAddCategory() {
-        $this->expectNotToPerformAssertions();
-
-        $db = new SqlDatabase;
-        $db->connect();
-
-        $db->persist("INSERT INTO admins(name, email, password) VALUES(:name, :email, :password)", [
-            "name" => "admin",
-            "email" => "admin@admin.com",
-            "password" => Hash::make("adminpass")
-        ]);
-
-        $db->close();
-
-        $_REQUEST = [
-            "name" => "sapatos",
-        ];
-
-        $jwt = new JWT;
-        $token = $jwt->createToken([
-            "name" => "admin",
-            "email" => "admin@admin.com",
-            "password" => Hash::make("adminpass")
-        ]);
-
+        $_REQUEST = ["name" => "sapatos"];
+        
         $mockRequest = $this->createMock(Request::class);
         $mockRequest->method("getHeader")
-            ->willReturn($token);   
+            ->willReturn($this->createToken());
         $mockRequest->method("getInput")
-            ->willReturn("sapatos");
+            ->willReturn($_REQUEST["name"]);
         
-        $categoryController = new CategoryController;
-        $categoryController->request = $mockRequest;
-        $categoryController->addCategory();
-    }
+        $this->categoryController->request = $mockRequest;
+        $this->categoryController->addCategory();
 
-    public function testCanUpdateCategory() {
-        $categoryService = new CategoryService;
-        $category = $categoryService->findByName("sapatos");
-
-        $_REQUEST["name"] = $category->name;
-    
-        $categoryController = new CategoryController;
-        $response = $categoryController->updateCategory($category->category_id);
-    
-        $this->assertEquals($response["message"], "Categoria atualizada com sucesso");
-    }
-
-    #[Depends("testCanAddCategory")]
-    public function testCanDeleteCategory() {
-        $categoryService = new CategoryService;
-        $category = $categoryService->findByName("sapatos");
-
-        $categoryController = new CategoryController;
-        $response = $categoryController->deleteCategory($category->category_id);
-    
-        $this->assertEquals($response["message"], "Categoria deletada com sucesso");
-    
-        $db = new SqlDatabase;
-        $db->connect();
-
-        $db->persist("DELETE FROM admins WHERE email = :email", [
-            "email" => "admin@admin.com",
+        $response = $this->sqlDatabase->fetchFirst("SELECT * FROM categories WHERE name = :name", Category::class, [
+            "name" => "sapatos",
         ]);
 
-        $db->close();
+        $this->assertNotNull($response);
+        $this->assertEquals(Category::class, get_class($response));
+    }
+
+    public function testCanDeleteCategory() {
+        $this->sqlDatabase->persist("INSERT INTO categories(name, admin_id) VALUES(:name, :admin_id)", [
+            "name" => "sapatos",
+            "admin_id" => $this->admin->admin_id,
+        ]);
+        $category = $this->sqlDatabase->fetchFirst("SELECT * FROM categories WHERE name = :name", Category::class, [
+            "name" => "sapatos",
+        ]);
+
+        $this->categoryController->deleteCategory($category->category_id);
+
+        $this->assertNull($this->sqlDatabase->fetchFirst("SELECT * FROM categories WHERE name = :name", Category::class, [
+            "name" => "sapatos",
+        ]));
+    }
+    public function testCanUpdateCategory() {
+        $this->sqlDatabase->persist("INSERT INTO categories(name, admin_id) VALUES(:name, :admin_id)", [
+            "name" => "sapatos",
+            "admin_id" => $this->admin->admin_id,
+        ]);
+        $category = $this->sqlDatabase->fetchFirst("SELECT * FROM categories WHERE name = :name", Category::class, [
+            "name" => "sapatos",
+        ]);
+
+        $_REQUEST = [
+            "name" => "tenis",
+        ];
+
+        $this->categoryController->request = new Request; 
+        $this->categoryController->updateCategory($category->category_id);
+
+        $categoryUpdated = $this->sqlDatabase->fetchFirst("SELECT * FROM categories WHERE category_id = :id", Category::class, [
+            "id" => $category->category_id,
+        ]);
+
+        $this->assertEquals($categoryUpdated->name, "tenis");
+    }
+
+    public function testCanFetchCategory() {
+        $this->sqlDatabase->persist("INSERT INTO categories(name, admin_id) VALUES(:name, :admin_id)", [
+            "name" => "sapatos",
+            "admin_id" => $this->admin->admin_id,
+        ]);
+
+        $response = $this->categoryController->showAllCategories();
+
+        $this->assertArrayHasKey("categories", $response);
+        $this->assertEquals(Category::class, get_class($response["categories"][0]));
     }
 
 }

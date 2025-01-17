@@ -18,10 +18,12 @@ class AdminController extends Controller {
 
     public Request $request;
     public ValidationMailTokenService $validationMailTokenService;
+    public AdminService $adminService;
 
     public function __construct() {
         $this->request = new Request;
         $this->validationMailTokenService = new ValidationMailTokenService;
+        $this->adminService = new AdminService;
     }
 
     public function sendValidationMail() {
@@ -31,6 +33,12 @@ class AdminController extends Controller {
             "password" => ["required", "min:8", "max:16", "exist:admins,password"],
         ]);
 
+        if (!$this->adminService->existWhere("email = :email AND name = :name AND password = :password", [
+            "email" => $this->request->getInput("email"),
+            "name" => $this->request->getInput("name"),
+            "password" => Hash::make($this->request->getInput("password")),
+        ])) throw new Exception("O admin não existe", 400);
+
         $validationMailToken = new ValidationMailToken;
 
         $validationMailToken->token = Hash::make($this->request->getInput("email"));
@@ -38,7 +46,6 @@ class AdminController extends Controller {
         $validationMailToken->user_info = json_encode([
             "email" => $this->request->getInput("email"),
             "name" => $this->request->getInput("name"),
-            "password" => Hash::make($this->request->getInput("password")),
         ]);
 
         $this->validationMailTokenService->save($validationMailToken);
