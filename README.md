@@ -27,7 +27,7 @@ Esse projeto é um freela fruto de uma parceria entre eu e meu amigo Lucas_Paz, 
 </ul>
 
 <h3>/api/auth/admin/verifyEmail - GET</h3>
-<p>Ao enviar um email de verificaçao de email ele ira junto com esse link ao admin clicar no link o email dele sera verificado e ele sera logado</p>
+<p>Ao enviar um email de verificaçao de email ele ira junto com um link, ao admin clicar no link ele sera redirecionado para uma pagina de verificaçao de email no frontend q tem a rota /auth/verifyemail, la vai ter um botao verificar email, que ao clicar nele um request sera enviado para essa rota q retorna com um token de acesso pra o admin</p>
 <ul>
     <li>token - Obrigatorio, precisa existir na tabela validation_mail_tokens</li>
     <li>email - Obrigatorio, precisa ser um email valido e existir na tabela validation_email_tokens</li>
@@ -48,7 +48,7 @@ Esse projeto é um freela fruto de uma parceria entre eu e meu amigo Lucas_Paz, 
 </ul>
 
 <h3>/api/category/all - GET</h3>
-<p>Retorna todas as categorias</p>
+<p>Retorna todas as categorias em forma de um array q esta presente no atributo categories do json retornado, cada casa do array é um objeto json equivalente a um objeto da classe KpEsportes/App/Domain/Model/Category</p>
 
 <h3>/api/category/update/{id} - PUT</h3>
 <p>Atualiza as informaçoes da categoria que tem o id igual ao id passado como parametro na uri</p>

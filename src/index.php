@@ -7,14 +7,6 @@ use KpEsportes\App\Util\Env;
 require_once(__DIR__ . "/vendor/autoload.php");
 require_once(__DIR__ . "/app/Domain/Routes/api.php");
 
-$cors = new Cors;
-
-$cors->setAllowedMethods("*");
-$cors->setAllowedHeaders("*");
-$cors->setAllowedOrigin("*");
-
-$cors->configure();
-
 $env_file = ".env";
 
 if (isset($_ENV["APP_ENV"])) {
@@ -25,6 +17,14 @@ if (isset($_ENV["APP_ENV"])) {
 }
 
 Env::load($env_file);
+
+$cors = new Cors;
+
+$cors->setAllowedMethods("*");
+$cors->setAllowedHeaders("*");
+$cors->setAllowedOrigin(Env::get("FRONTEND_URL"));
+
+$cors->configure();
 
 date_default_timezone_set(Env::get("TIMEZONE"));
 
