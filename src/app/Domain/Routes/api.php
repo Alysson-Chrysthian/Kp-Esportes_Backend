@@ -16,3 +16,4 @@ Router::add("GET", "/category/all", [CategoryController::class, "showAllCategori
 Router::add("PUT", "/category/update/{id}", [CategoryController::class, "updateCategory"], [Auth::class, "handle"]);
 
 Router::add("POST", "/product/add", [ProductController::class, "addProduct"], [Auth::class, "handle"]);
+Router::add("POST", "/product/update/{id}", [ProductController::class, "updateProduct"], [Auth::class, "handle"]);

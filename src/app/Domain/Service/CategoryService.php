@@ -41,13 +41,13 @@ class CategoryService extends Service {
         $this->db->persist("DELETE FROM products WHERE category_id = :id", [
             "id" => $category->category_id,
         ]);
-        $rowsAffected = $this->db->persist("DELETE FROM " . $this->table . " WHERE name = :name", [
+        $rows_affected = $this->db->persist("DELETE FROM " . $this->table . " WHERE name = :name", [
             "name" => $name,
         ]);
 
         $this->db->close();
 
-        return $rowsAffected;
+        return $rows_affected;
     }
 
     public function deleteById(int $id) {
@@ -56,13 +56,13 @@ class CategoryService extends Service {
         $this->db->persist("DELETE FROM products WHERE category_id = :id", [
             "id" => $id,
         ]);
-        $rowsAffected = $this->db->persist("DELETE FROM " . $this->table . " WHERE category_id = :id", [
+        $rows_affected = $this->db->persist("DELETE FROM " . $this->table . " WHERE category_id = :id", [
             "id" => $id,
         ]);
 
         $this->db->close();
         
-        return $rowsAffected;
+        return $rows_affected;
     }
 
     public function findByName(string $name) {
@@ -88,7 +88,7 @@ class CategoryService extends Service {
     public function update(Category $category) {
         $this->db->connect();
 
-        $rowsAffected = $this->db->persist("UPDATE categories SET name = :name, updated_at = :updated_at WHERE category_id = :id", [
+        $rows_affected = $this->db->persist("UPDATE categories SET name = :name, updated_at = :updated_at WHERE category_id = :id", [
             "name" => $category->name,
             "updated_at" => Date::now()->format(),
             "id" => $category->category_id,
@@ -96,7 +96,7 @@ class CategoryService extends Service {
 
         $this->db->close();
 
-        return $rowsAffected;
+        return $rows_affected;
     }
 
 }

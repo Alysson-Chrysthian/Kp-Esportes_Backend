@@ -37,4 +37,48 @@ class ProductService extends Service {
         $this->db->close();
     }
 
+    public function deleteById(int $id) {
+        $this->db->connect();
+        $rows_affected = $this->db->persist("DELETE FROM " . $this->table . " WHERE product_id = :id", [
+            "id" => $id,
+        ]);
+        $this->db->close();
+
+        return $rows_affected;
+    }
+
+    public function updateById(Product $product) {
+        $this->db->connect();
+        
+        $rows_affected = $this->db->persist("
+            UPDATE " . $this->table . "  
+            SET name = :name, description = :desc, price = :price, discount = :disc, size = :size, image = :image, category_id = :cat, updated_at = :updated_at
+            WHERE product_id = :id 
+        ", [
+            "id" => $product->product_id,
+            "name" => $product->name,
+            "desc" => $product->description,
+            "price" => $product->price,
+            "disc" => $product->discount,
+            "size" => $product->size,
+            "image" => $product->image,
+            "cat" => $product->category_id,
+            "updated_at" => Date::now()->format(),
+        ]);
+
+        $this->db->close();
+
+        return $rows_affected;
+    }
+
+    public function findById(int $id) {
+        $this->db->connect();
+        $product = $this->db->fetchFirst("SELECT * FROM " . $this->table . " WHERE product_id = :id", Product::class, [
+            "id" => $id,
+        ]);
+        $this->db->close();
+
+        return $product;
+    }
+
 }

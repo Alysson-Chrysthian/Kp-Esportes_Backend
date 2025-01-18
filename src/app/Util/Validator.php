@@ -24,8 +24,11 @@ class Validator {
                 $value = $request->getInput($field_name);
 
             foreach ($rules as $rule) {
-                if ($rule == "nullable" && $value == null)
-                    break;
+                if ($rule == "nullable") {
+                    if ($value == null)
+                        break;
+                    continue;
+                }
 
                 $rule_name = explode(":", $rule)[0];
                 $rule = preg_replace("#(.*)\:#", "", $rule);

@@ -70,3 +70,16 @@ Esse projeto é um freela fruto de uma parceria entre eu e meu amigo Lucas_Paz, 
     <li>image - É obrigatorio, precisa ser um arquivo valido e precisa ser do tipo jpeg, jpg, png ou gif</li>
     <li>category - É obrigatorio, precisa ser numerico e precisa existir no campo category_id na tabela categories</li>
 </ul>
+
+<h3>/api/product/update/{id} - POST</h3>
+<p>Essa rota serve para atualizar um produto, o campo imagem deve ser enviado como nulo caso a imagem permaneça a mesma</p>
+<ul>
+    <li>id - É obrigatorio, deve ser numerico e deve existir na table products no campo product_id</li>
+    <li>name - É obrigatorio, deve ter no minimo 3 e no maximo 40 caracteres e deve ser unico na tabela products com exceçao do registro com o product_id igual ao id do request</li>
+    <li>description - É obrigatorio, deve ter no minimo 10 e no maximo 10000 caracteres</li>
+    <li>price - É obrigatorio, deve ser numerico</li>
+    <li>discount - É obrigatorio, deve ser numerico</li>
+    <li>size - É obrigatorio, deve ser uma lista contendo todos os tamanhos</li>
+    <li>image - Pode ser nulo, deve ser um arquivo valido, e deve ter um dos seguintes tipos jpeg, jpg, png ou gif</li>
+    <li>category - É obrigatorio, precisa ser numerico e precisa existir na tabela categories no campo category_id</li>
+</ul>
