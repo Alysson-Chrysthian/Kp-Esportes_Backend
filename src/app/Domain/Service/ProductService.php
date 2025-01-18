@@ -8,7 +8,6 @@ use KpEsportes\App\Util\Date;
 
 class ProductService extends Service {
 
-    public SqlDatabase $db;
     protected string $table = "products";
 
     public function __construct() {

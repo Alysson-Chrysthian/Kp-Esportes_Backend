@@ -7,7 +7,6 @@ use KpEsportes\App\Storage\SqlDatabase;
 
 class AdminService extends Service {
 
-    public SqlDatabase $db;
     protected string $table = "admins";
 
     public function __construct() {
