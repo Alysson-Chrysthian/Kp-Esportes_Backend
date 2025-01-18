@@ -56,3 +56,17 @@ Esse projeto é um freela fruto de uma parceria entre eu e meu amigo Lucas_Paz, 
     <li>id - Obrigatorio, numerico, e precisa existir na tabela categories</li>
     <li>name - Obrigatorio, minimo de 3 caracteres maximo de 25, e deve ser unico na tabela categories</li>
 </ul>
+
+<h2>Products</h2>
+
+<h3>/api/product/add</h3>
+<p>Esta rota serve para adicionar um novo produto, ela é protegida entao voce precisa estar autenticado como administrador</p>
+<ul>
+    <li>name - É um campo obrigatorio minimo de 3 e maximo de 40 caracteres</li>
+    <li>description - Obrigatorio minimo de 10 e maximo de 10000 caracteres</li>
+    <li>price - É obrigatorio e precisa ser um valor numerico
+    <li>discount - É obrigatorio e precisa ser uma valor numerico</li>
+    <li>size - É obrigatorio, nao pode ser vazio e precisa vim no formato json</li>
+    <li>image - É obrigatorio, precisa ser um arquivo valido e precisa ser do tipo jpeg, jpg, png ou gif</li>
+    <li>category - É obrigatorio, precisa ser numerico e precisa existir no campo category_id na tabela categories</li>
+</ul>
