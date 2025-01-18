@@ -59,7 +59,7 @@ Esse projeto é um freela fruto de uma parceria entre eu e meu amigo Lucas_Paz, 
 
 <h2>Products</h2>
 
-<h3>/api/product/add</h3>
+<h3>/api/product/add - POST</h3>
 <p>Esta rota serve para adicionar um novo produto, ela é protegida entao voce precisa estar autenticado como administrador</p>
 <ul>
     <li>name - É um campo obrigatorio minimo de 3 e maximo de 40 caracteres</li>
