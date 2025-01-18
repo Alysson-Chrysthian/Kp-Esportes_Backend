@@ -10,6 +10,8 @@ Esse projeto é um freela fruto de uma parceria entre eu e meu amigo Lucas_Paz, 
 <h1>UML Docs</h1>
 <h2>Use Case</h2>
 <img src="./docs/uml/Kp_Esportes_UML_UseCase.png" />
+<h2>Class Diagram</h2>
+<img src="./docs/uml/Kp_Esportes_UML_ClassDiagram.png" />
 
 <h1>Flow docs</h1>
 <h2>Authentication flow chart</h2>
