@@ -46,4 +46,52 @@ class ValidatorTest extends TestCase {
         ]);
     }
 
+    public function testCanValidateList() {
+        $this->expectNotToPerformAssertions();
+        Validator::validate([
+            "list" => ["list"],
+        ], ["list" => []]);
+        Validator::validate([
+            "list" => ["list"],
+        ], ["list" => "{\"list\":\"list\"}"]);
+    }
+
+    public function testValidationListIsThrowingToNonJsonStrings() {
+        $this->expectException(Exception::class);
+        Validator::validate([
+            "list" => ["list"]
+        ], ["list" => "not a json"]);
+    }
+
+    public function testValidationListIsThrowingToNonArrayVars() {
+        $this->expectException(Exception::class);
+        Validator::validate([
+            "list" => ["list"],
+        ], ["list" => new stdClass]);
+    }
+
+    public function testCanValidateFilledValues() {
+        $this->expectNotToPerformAssertions();
+        Validator::validate([
+            "filled" => ["filled"],
+        ], ["filled" => "fill"]);
+        Validator::validate([
+            "filled" => ["filled"]
+        ], ["filled" => ["filledarray"]]);
+    }
+
+    public function testFilledValidationIsThrowingToEmptyArrays() {
+        $this->expectException(Exception::class);
+        Validator::validate([
+            "filled" => ["filled"]
+        ], ["filled" => []]);
+    }
+
+    public function testFilledValidationIsThrowingToEmptyStrings() {
+        $this->expectException(Exception::class);
+        Validator::validate([
+            "filled" => ["filled"]
+        ], ["filled" => ""]);
+    }
+
 }

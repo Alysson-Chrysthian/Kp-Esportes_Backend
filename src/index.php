@@ -26,7 +26,11 @@ try {
     http_response_code(200);
     echo json_encode(Router::checkRoute());
 } catch (Exception $error) {
-    http_response_code($error->getCode());
+    $code = 400;
+    if (is_numeric($error->getCode()))
+        $code = $error->getCode();
+
+    http_response_code($code);
     
     $message = $error->getMessage();
     if (json_decode($message) != null)

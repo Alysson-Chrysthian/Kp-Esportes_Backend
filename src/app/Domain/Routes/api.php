@@ -3,6 +3,7 @@
 use KpEsportes\App\Domain\Router;
 use KpEsportes\App\Http\Controller\AdminController;
 use KpEsportes\App\Http\Controller\CategoryController;
+use KpEsportes\App\Http\Controller\ProductController;
 use KpEsportes\App\Http\Middleware\Auth;
 use KpEsportes\App\Http\Middleware\Guest;
 
@@ -13,3 +14,5 @@ Router::add("POST", "/category/add", [CategoryController::class, "addCategory"],
 Router::add("DELETE", "/category/delete/{id}", [CategoryController::class, "deleteCategory"], [Auth::class, "handle"]);
 Router::add("GET", "/category/all", [CategoryController::class, "showAllCategories"], [Auth::class, "handle"]);
 Router::add("PUT", "/category/update/{id}", [CategoryController::class, "updateCategory"], [Auth::class, "handle"]);
+
+Router::add("POST", "/product/add", [ProductController::class, "addProduct"], [Auth::class, "handle"]);

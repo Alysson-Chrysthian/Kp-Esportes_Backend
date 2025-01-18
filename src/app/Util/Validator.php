@@ -12,18 +12,21 @@ class Validator {
     public static function validate(array $validation_fields_and_rules, array|null $validation_fields = []) {
         $request = new Request;
         $fields = $validation_fields;
-        $value = null;
-
         $validation_handler = new Validator;
         $errors = [];
 
         foreach($validation_fields_and_rules as $field_name => $rules) {
-            if (isset($fields[$field_name])) 
+            $value = null;
+
+            if (isset($fields[$field_name]))
                 $value = $fields[$field_name];
             elseif ($request->getInput($field_name) != null)
                 $value = $request->getInput($field_name);
 
             foreach ($rules as $rule) {
+                if ($rule == "nullable" && $value == null)
+                    break;
+
                 $rule_name = explode(":", $rule)[0];
                 $rule = preg_replace("#(.*)\:#", "", $rule);
 
@@ -74,20 +77,23 @@ class Validator {
     protected function unique(mixed $value, string $field_name, string $table, string $column_name, string $exception_column=null, mixed $exception_value=null) {
         $db = new SqlDatabase;
         $db->connect();
+        $result = [];
 
-        $query = "SELECT * FROM $table WHERE $column_name = :value";
-        $binds = [
-            "value" => $value,
-        ];
+        try {
+            $query = "SELECT * FROM $table WHERE $column_name = :value";
+            $binds = [
+                "value" => $value,
+            ];
 
-        if ($exception_column != null && $exception_value != null) {
-            $query .= " AND $exception_column != :exception_value";
-            $binds["exception_value"] = $exception_value;
-        }
+            if ($exception_column != null && $exception_value != null) {
+                $query .= " AND $exception_column != :exception_value";
+                $binds["exception_value"] = $exception_value;
+            }
 
-        $result = $db->fetch($query, stdClass::class, $binds);
+            $result = $db->fetch($query, stdClass::class, $binds);
 
-        $db->close();
+            $db->close();
+        } catch (Exception $e) {}
 
         if (count($result) > 0)
             throw new Exception("Este $field_name ja esta cadastrado");
@@ -101,15 +107,18 @@ class Validator {
     protected function exist(mixed $value, string $field_name, string $table, string $column_name) {
         $db = new SqlDatabase;
         $db->connect();
+        $result = [];
 
-        if ($field_name == "password") 
-            $value = Hash::make($value);
+        try {
+            if ($field_name == "password") 
+                $value = Hash::make($value);
 
-        $result = $db->fetch("SELECT * FROM $table WHERE $column_name = :value", stdClass::class, [
-            "value" => $value,
-        ]);
+            $result = $db->fetch("SELECT * FROM $table WHERE $column_name = :value", stdClass::class, [
+                "value" => $value,
+            ]);
 
-        $db->close();
+            $db->close();
+        } catch (Exception $e) {}
 
         if (count($result) <= 0)
             throw new Exception("Este $field_name não existe, por favor tente novamente");
@@ -118,6 +127,41 @@ class Validator {
     protected function numeric(mixed $value, string $field_name) {
         if (!is_numeric($value))
             throw new Exception("O $field_name precisa ser um valor numerico");
+    }
+
+    protected function list(mixed $value, string $field_name) {        
+        if (is_string($value) && json_decode($value) != null)
+            return;
+        else if (is_array($value))
+            return;
+        
+        throw new Exception("O campo $field_name precisa ser uma lista valida");
+    }
+
+    protected function filled(mixed $value, string $field_name) {
+        if (empty($value))
+            throw new Exception("O campo $field_name não pode estar vazio");
+    }
+
+    protected function file(mixed $value, string $field_name) {
+        if (isset($_FILES[$field_name]))
+            return;
+
+        throw new Exception("O campo $field_name precisa ser um arquivo");
+    }
+
+    protected function types(mixed $value, string $field_name, string ...$types) {
+        if (!isset($_FILES[$field_name]))
+            throw new Exception("O campo $field_name não é um arquivo valido");
+
+        $file_type = explode(".", $value["name"])[1];
+
+        foreach ($types as $type) {
+            if ($file_type == $type)
+                return;
+        }
+
+        throw new Exception("O campo $field_name precisa ter um dos seguintes tipos: " . implode(",", $types));
     }
 
 }

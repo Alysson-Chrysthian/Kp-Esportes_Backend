@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS products(
     price FLOAT NOT NULL,
     size VARCHAR(255),
     discount FLOAT,
+    image VARCHAR(255),
     admin_id INT REFERENCES admins(admin_id),
     category_id INT REFERENCES categories(category_id),
     created_at TIMESTAMP,

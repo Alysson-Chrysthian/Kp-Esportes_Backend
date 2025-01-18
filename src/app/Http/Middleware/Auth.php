@@ -4,6 +4,7 @@ namespace KpEsportes\App\Http\Middleware;
 
 use Exception;
 use KpEsportes\App\Http\Request;
+use KpEsportes\App\Util\JWT;
 
 class Auth extends Middleware {
     
@@ -14,8 +15,13 @@ class Auth extends Middleware {
     }
 
     public function handle() {
-        if ($this->request->getHeader("Authorization") == null)
-            throw new Exception("Você precisa esta autenticado para acessar esta rota", 403);
+        $token = $this->request->getHeader("Authorization");
+        $jwt = new JWT;
+
+        if ($token != null && $jwt->decodeToken($token))
+            return;
+            
+        throw new Exception("Você precisa esta autenticado para acessar esta rota", 403);
     }
 
 }

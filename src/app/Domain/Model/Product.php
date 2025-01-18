@@ -10,6 +10,7 @@ class Product extends Model {
     public float $price;
     public string $size;
     public float $discount;
+    public string $image;
     public int $admin_id;
     public int $category_id;
 

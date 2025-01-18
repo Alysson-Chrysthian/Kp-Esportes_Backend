@@ -4,6 +4,7 @@ CREATE TABLE IF NOT EXISTS products(
     description TEXT,
     price FLOAT NOT NULL,
     size VARCHAR(255),
+    image VARCHAR(255),
     discount FLOAT,
     admin_id INTEGER REFERENCES admins(admin_id),
     category_id INTEGER REFERENCES categories(category_id),
