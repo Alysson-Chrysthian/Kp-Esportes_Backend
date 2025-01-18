@@ -8,7 +8,6 @@ use KpEsportes\App\Util\Date;
 
 class ValidationMailTokenService extends Service {
 
-    public SqlDatabase $db;
     protected string $table = "validation_mail_tokens";
 
     public function __construct() {
