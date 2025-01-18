@@ -94,6 +94,7 @@ class ProductController extends Controller {
         $product->discount = $this->request->getInput("discount");
         $product->size = $this->request->getInput("size");
         $product->category_id = $this->request->getInput("category");
+
         if ($this->request->getInput("image") != null) {
             $image = $this->request->getInput("image");
             $image_save_info = $this->saveImage($image);
@@ -111,11 +112,49 @@ class ProductController extends Controller {
         ];
     }
 
-    public function getProducts() {}
+    public function getProducts() {
+        Validator::validate([
+            "limit" => ["nullable", "numeric"],
+        ]);
 
-    public function searchProducts() {}
+        $binds = null;
+        $where_clause = "ORDER BY created_at DESC";
 
-    public function findProduct($id) {}
+        if ($this->request->getInput("limit") != null) {
+            $where_clause .= " LIMIT :limit";
+            $binds["limit"] = $this->request->getInput("limit");
+        }
+
+        return [
+            "products" => $this->productService->select($where_clause, $binds),
+        ];
+    }
+
+    public function searchProducts() {
+        Validator::validate([
+            "search" => ["nullable"],
+        ]);
+
+        $products = $this->productService->select("JOIN categories ON categories.category_id = products.category_id WHERE categories.name like :search OR products.name like :search ORDER BY created_at DESC", [
+            "search" => "%" . $this->request->getInput("search") . "%",
+        ], "products.*");
+
+        return [
+            "products" => $products,
+        ];
+    }
+
+    public function findProduct($id) {
+        Validator::validate([
+            "id" => ["required", "numeric", "exist:products,product_id"],
+        ], ["id" => $id]);
+
+        $product = $this->productService->findById($id);
+
+        return [
+            "product" => $product,
+        ];
+    }
 
     private function saveImage(array $image) {
         $image_save_name = time();

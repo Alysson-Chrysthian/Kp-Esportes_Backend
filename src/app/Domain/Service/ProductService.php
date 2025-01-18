@@ -78,7 +78,22 @@ class ProductService extends Service {
         ]);
         $this->db->close();
 
+        $product->setUp();
+
         return $product;
+    }
+
+    public function select(string $whereClause, array|null $binds = null, string $select_elements = "*") {
+        $this->db->connect();
+
+        $products = $this->db->fetch("SELECT $select_elements FROM " . $this->table . " $whereClause", Product::class, $binds);
+
+        foreach ($products as $product)
+            $product->setUp();
+
+        $this->db->close();
+
+        return $products;
     }
 
 }

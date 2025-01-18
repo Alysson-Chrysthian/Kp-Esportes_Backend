@@ -33,7 +33,7 @@ class ValidationMailTokenService extends Service {
         $this->db->close();
     }
 
-    public function whereFirst($whereClause, array|null $binds = null) {
+    public function whereFirst(string $whereClause, array|null $binds = null) {
         $this->db->connect();
 
         $result = $this->db->fetchFirst("SELECT * FROM " . $this->table . " WHERE $whereClause", ValidationMailToken::class, $binds);

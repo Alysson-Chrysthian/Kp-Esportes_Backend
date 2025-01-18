@@ -41,6 +41,8 @@ class CategoryControllerTest extends TestCase {
 
         $this->sqlDatabase->connect();
 
+        $this->resetData();
+
         $this->sqlDatabase->persist("INSERT INTO admins(name, email, password) VALUES(:name, :email, :password)", [
             "name" => $this->adminName,
             "email" => $this->adminEmail,
@@ -59,7 +61,7 @@ class CategoryControllerTest extends TestCase {
     }
     
     private function resetData() {
-        $this->sqlDatabase->persist("DELETE FROM categories WHERE name = :name OR name = :second_name", ["name" => "sapatos", "second_name" => "tenis"]);
+        $this->sqlDatabase->persist("DELETE FROM categories WHERE name = :name OR name = :second_name", ["name" => "unexistable_category_1", "second_name" => "unexistable_category_2"]);
         $this->sqlDatabase->persist("DELETE FROM admins WHERE email = :email", ["email" => $this->adminEmail]);
     }
 
@@ -68,7 +70,7 @@ class CategoryControllerTest extends TestCase {
     }
 
     public function testCanAddCategory() {
-        $_REQUEST = ["name" => "sapatos"];
+        $_REQUEST = ["name" => "unexistable_category_1"];
         
         $mockRequest = $this->createMock(Request::class);
         $mockRequest->method("getHeader")
@@ -80,7 +82,7 @@ class CategoryControllerTest extends TestCase {
         $this->categoryController->addCategory();
 
         $response = $this->sqlDatabase->fetchFirst("SELECT * FROM categories WHERE name = :name", Category::class, [
-            "name" => "sapatos",
+            "name" => "unexistable_category_1",
         ]);
 
         $this->assertNotNull($response);
@@ -89,30 +91,30 @@ class CategoryControllerTest extends TestCase {
 
     public function testCanDeleteCategory() {
         $this->sqlDatabase->persist("INSERT INTO categories(name, admin_id) VALUES(:name, :admin_id)", [
-            "name" => "sapatos",
+            "name" => "unexistable_category_1",
             "admin_id" => $this->admin->admin_id,
         ]);
         $category = $this->sqlDatabase->fetchFirst("SELECT * FROM categories WHERE name = :name", Category::class, [
-            "name" => "sapatos",
+            "name" => "unexistable_category_1",
         ]);
 
         $this->categoryController->deleteCategory($category->category_id);
 
         $this->assertNull($this->sqlDatabase->fetchFirst("SELECT * FROM categories WHERE name = :name", Category::class, [
-            "name" => "sapatos",
+            "name" => "unexistable_category_1",
         ]));
     }
     public function testCanUpdateCategory() {
         $this->sqlDatabase->persist("INSERT INTO categories(name, admin_id) VALUES(:name, :admin_id)", [
-            "name" => "sapatos",
+            "name" => "unexistable_category_1",
             "admin_id" => $this->admin->admin_id,
         ]);
         $category = $this->sqlDatabase->fetchFirst("SELECT * FROM categories WHERE name = :name", Category::class, [
-            "name" => "sapatos",
+            "name" => "unexistable_category_1",
         ]);
 
         $_REQUEST = [
-            "name" => "tenis",
+            "name" => "unexistable_category_2",
         ];
 
         $this->categoryController->request = new Request; 
@@ -122,12 +124,12 @@ class CategoryControllerTest extends TestCase {
             "id" => $category->category_id,
         ]);
 
-        $this->assertEquals($categoryUpdated->name, "tenis");
+        $this->assertEquals($categoryUpdated->name, "unexistable_category_2");
     }
 
     public function testCanFetchCategory() {
         $this->sqlDatabase->persist("INSERT INTO categories(name, admin_id) VALUES(:name, :admin_id)", [
-            "name" => "sapatos",
+            "name" => "unexistable_category_1",
             "admin_id" => $this->admin->admin_id,
         ]);
 

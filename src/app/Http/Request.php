@@ -18,7 +18,10 @@ class Request {
     }
 
     public function getInput(string $name) {
-        return isset($this->body[$name]) ? $this->body[$name] : null;
+        $input_value = isset($this->body[$name]) ? $this->body[$name] : null;
+        if (is_string($input_value))
+            $input_value = trim($input_value);
+        return $input_value;
     }
 
     public function getHeader(string $name) {

@@ -83,3 +83,27 @@ Esse projeto é um freela fruto de uma parceria entre eu e meu amigo Lucas_Paz, 
     <li>image - Pode ser nulo, deve ser um arquivo valido, e deve ter um dos seguintes tipos jpeg, jpg, png ou gif</li>
     <li>category - É obrigatorio, precisa ser numerico e precisa existir na tabela categories no campo category_id</li>
 </ul>
+
+<h3>/api/product/recents?limit={?limit} - GET</h3>
+<p>Retorna os produtos em ordem de contraria á de inserçao, o parametro limit dita a quantidade maxima de produtos a ser retornado</p>
+<ul>
+    <li>limit - Pode ser nulo, caso seja retornara todos os produtos, e precisa ser numerico</li>
+</ul>
+
+<h3>/api/product/find/{id} - GET</h3>
+<p>Retorna um produto especifico q tem o id correspondente ao id passado como parametro na uri</p>
+<ul>
+    <li>id - Obrigatorio, numerico e precisa existir na tabela products no campo product_id</li>
+</ul>
+
+<h3>/api/product/delete/{id} - DELETE</h3>
+<p>Deleta um produto um produto do banco de dados</p>
+<ul>
+    <li>id - É obrigatorio, e precisa existir na tabela products no campo product_id</li>
+</ul>
+
+<h3>/api/product/search?search={search} - GET</h3>
+<p>Retorna os produtos q tenho o nome ou categoria parecida com o valor do search q é passado no corpo da requisiçao</p>
+<ul>
+    <li>search - É obrigatorio</li>
+</ul>

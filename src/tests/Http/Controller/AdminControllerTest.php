@@ -24,11 +24,11 @@ class AdminControllerTest extends TestCase {
         $db->connect();
 
         $db->persist("DELETE FROM admins WHERE email = :email", [
-            "email" => "alyssonchrysthian@gmail.com",
+            "email" => "alysson@gmail.com",
         ]);
         $db->persist("INSERT INTO admins(name, email, password) VALUES(:name, :email, :password)", [
             "name" => "alysson",
-            "email" => "alyssonchrysthian@gmail.com",
+            "email" => "alysson@gmail.com",
             "password" => Hash::make("mypassword"),
         ]);
 
@@ -37,7 +37,7 @@ class AdminControllerTest extends TestCase {
 
     public function testCanSendEmailVerificationMessage() {
         $_REQUEST = [
-            "email" => "alyssonchrysthian@gmail.com",
+            "email" => "alysson@gmail.com",
             "name" => "alysson",
             "password" => "mypassword",
         ];
@@ -49,7 +49,7 @@ class AdminControllerTest extends TestCase {
         $db->connect();
 
         $result = $db->fetchFirst("SELECT * FROM validation_mail_tokens WHERE email = :email", ValidationMailToken::class, [
-            "email" => "alyssonchrysthian@gmail.com",
+            "email" => "alysson@gmail.com",
         ]);
 
         $db->close();
@@ -63,19 +63,19 @@ class AdminControllerTest extends TestCase {
         $db->connect();
         
         $tokenForRequest = $db->fetchFirst("SELECT * FROM validation_mail_tokens WHERE email = :email", ValidationMailToken::class, [
-            "email" => "alyssonchrysthian@gmail.com",
+            "email" => "alysson@gmail.com",
         ])->token;
 
         $_REQUEST = [
             "token" => $tokenForRequest, 
-            "email" => "alyssonchrysthian@gmail.com", 
+            "email" => "alysson@gmail.com", 
         ];
 
         $adminController = new AdminController;
         $response = $adminController->verifyEmail();
 
         $token = $db->fetchFirst("SELECT * FROM validation_mail_tokens WHERE email = :email", ValidationMailToken::class, [
-            "email" => "alyssonchrysthian@gmail.com"
+            "email" => "alysson@gmail.com"
         ]);
 
         $jwt = new JWT;
@@ -83,7 +83,7 @@ class AdminControllerTest extends TestCase {
 
         $db->close();
     
-        $this->assertEquals("alyssonchrysthian@gmail.com", $admin["email"]);
+        $this->assertEquals("alysson@gmail.com", $admin["email"]);
         $this->assertNull($token);
     }
 
@@ -95,7 +95,7 @@ class AdminControllerTest extends TestCase {
         $db->connect();
 
         $db->persist("DELETE FROM admins WHERE email = :email", [
-            "email" => "alyssonchrysthian@gmail.com",
+            "email" => "alysson@gmail.com",
         ]);
 
         $db->close();
