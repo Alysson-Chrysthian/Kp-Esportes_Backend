@@ -102,8 +102,16 @@ Esse projeto é um freela fruto de uma parceria entre eu e meu amigo Lucas_Paz, 
     <li>id - É obrigatorio, e precisa existir na tabela products no campo product_id</li>
 </ul>
 
-<h3>/api/product/search?search={search} - GET</h3>
-<p>Retorna os produtos q tenho o nome ou categoria parecida com o valor do search q é passado no corpo da requisiçao</p>
+<h3>/api/product/search?search={?search} - GET</h3>
+<p>Retorna os produtos q tenho o nome ou categoria parecida com o valor do search q é passado no corpo da requisiçao, se o search for nulo retorna todos os produtos</p>
 <ul>
-    <li>search - É obrigatorio</li>
+    <li>search - Pode ser nulo</li>
+</ul>
+
+<h3>/api/product/paginate?search={?search}&products_per_page={products_per_page}&page={page} - GET</h3>
+<p>Retorna todos os produtos da pagina passada como parametro, por exemplo se products_per_page for 20 e page 2 ele retornara os 20 produtos depois dos 20 primeiros, se page for 1 e products_per_page 20 ele vai retornar os 20 primeiros, o caluculo pro OFFSET é o seguinte (page - 1) * products_per_page</p>
+<ul>
+    <li>search - Pode ser nulo</li>
+    <li>products_per_page - É obrigatorio e precisa ser numerico</li>
+    <li>page - É obrigatorio e precisa ser numerico</li>
 </ul>

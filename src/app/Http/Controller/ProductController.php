@@ -156,6 +156,30 @@ class ProductController extends Controller {
         ];
     }
 
+    public function searchWithPagination() {
+        Validator::validate([
+            "search" => ["nullable"],
+            "products_per_page" => ["required", "numeric"],
+            "page" => ["required", "numeric", "min:1"]
+        ]);
+
+        $search = $this->request->getInput("search");
+        $limit = $this->request->getInput("products_per_page");
+        $page = $this->request->getInput("page");
+
+        $products = $this->productService->select("
+            JOIN categories ON categories.category_id = products.category_id 
+            WHERE categories.name like :search OR products.name like :search 
+            ORDER BY created_at DESC LIMIT :limit OFFSET :offset
+        ", [
+            "search" => "%" . $search . "%",
+            "limit" => $limit,
+            "offset" => ($page - 1) * $limit,
+        ], "products.*");
+
+        return $products;
+    }
+
     private function saveImage(array $image) {
         $image_save_name = time();
         $image_type = explode(".", $image["name"])[1];
