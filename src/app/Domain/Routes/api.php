@@ -19,6 +19,7 @@ Router::add("GET", "/product/recents", [ProductController::class, "getProducts"]
 Router::add("GET", "/product/find/{id}", [ProductController::class, "findProduct"]);
 Router::add("GET", "/product/search", [ProductController::class, "searchProducts"]);
 Router::add("GET", "/product/paginate", [ProductController::class, "searchWithPagination"]);
+Router::add("GET", "/product/count", [ProductController::class, "countProducts"]);
 Router::add("POST", "/product/add", [ProductController::class, "addProduct"], [Auth::class, "handle"]);
 Router::add("POST", "/product/update/{id}", [ProductController::class, "updateProduct"], [Auth::class, "handle"]);
 Router::add("DELETE", "/product/delete/{id}", [ProductController::class, "deleteProduct"], [Auth::class, "handle"]);

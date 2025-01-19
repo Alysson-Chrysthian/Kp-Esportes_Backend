@@ -167,6 +167,8 @@ class ProductController extends Controller {
         $limit = $this->request->getInput("products_per_page");
         $page = $this->request->getInput("page");
 
+        $pages_count = round($this->productService->count() / $limit);
+
         $products = $this->productService->select("
             JOIN categories ON categories.category_id = products.category_id 
             WHERE categories.name like :search OR products.name like :search 
@@ -177,7 +179,16 @@ class ProductController extends Controller {
             "offset" => ($page - 1) * $limit,
         ], "products.*");
 
-        return $products;
+        return [
+            "pages_count" => $pages_count,
+            "products" => $products
+        ];
+    }
+
+    public function countProducts() {
+        return [
+            "count_products" => $this->productService->count()
+        ];
     }
 
     private function saveImage(array $image) {

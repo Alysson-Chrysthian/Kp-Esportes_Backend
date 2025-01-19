@@ -111,9 +111,12 @@ Esse projeto é um freela fruto de uma parceria entre eu e meu amigo Lucas_Paz, 
 </ul>
 
 <h3>/api/product/paginate?search={?search}&products_per_page={products_per_page}&page={page} - GET</h3>
-<p>Retorna todos os produtos da pagina passada como parametro, por exemplo se products_per_page for 20 e page 2 ele retornara os 20 produtos depois dos 20 primeiros, se page for 1 e products_per_page 20 ele vai retornar os 20 primeiros, o caluculo pro OFFSET é o seguinte (page - 1) * products_per_page</p>
+<p>Retorna todos os produtos da pagina passada como parametro, por exemplo se products_per_page for 20 e page 2 ele retornara os 20 produtos depois dos 20 primeiros, se page for 1 e products_per_page 20 ele vai retornar os 20 primeiros, o caluculo pro OFFSET é o seguinte (page - 1) * products_per_page, e tambem é o retornado o numero total de paginas</p>
 <ul>
     <li>search - Pode ser nulo</li>
     <li>products_per_page - É obrigatorio e precisa ser numerico</li>
     <li>page - É obrigatorio e precisa ser numerico</li>
 </ul>
+
+<h3>/api/product/count - GET</h3>
+<p>Retorna o numero de produtos cadastrados</p>

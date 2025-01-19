@@ -28,6 +28,7 @@ class SqlDatabase extends Database {
     public function fetch(string $query, string $class = null, array $binds = null) {
         $prepared_statement = $this->conn->prepare($query);
         $prepared_statement->execute($binds);
+
         $result = $prepared_statement->fetchAll(PDO::FETCH_CLASS, $class);
 
         return $result;
@@ -36,10 +37,21 @@ class SqlDatabase extends Database {
     public function fetchFirst(string $query, string $class = null, array $binds = null) {
         $prepared_statement = $this->conn->prepare($query);
         $prepared_statement->execute($binds);
-        $prepared_statement->setFetchMode(PDO::FETCH_CLASS, $class);
+        
+        if ($class != null)
+            $prepared_statement->setFetchMode(PDO::FETCH_CLASS, $class);
+        
         $result = $prepared_statement->fetch();
 
         return $result ? $result : null;
+    }
+
+    public function agregate(string $query, string $agregation_function, array $binds = null) {
+        $prepared_statement = $this->conn->prepare($query);
+        $prepared_statement->execute($binds);
+        $result = $prepared_statement->fetch()[$agregation_function];
+
+        return $result;
     }
 
     public function persist(string $query, array $binds = null) {

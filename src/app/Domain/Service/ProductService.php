@@ -95,4 +95,14 @@ class ProductService extends Service {
         return $products;
     }
 
+    public function count() {
+        $this->db->connect();
+        
+        $count = $this->db->agregate("SELECT count(*) FROM " . $this->table, "count");
+        
+        $this->db->close();
+
+        return $count;
+    }
+
 }
