@@ -50,7 +50,7 @@ class Validator {
     }
 
     protected function required(mixed $value, string $field_name) {
-        if ($value == null || empty($value))
+        if ($value == null)
             throw new Exception("O campo $field_name é obrigatorio");
     }
 
