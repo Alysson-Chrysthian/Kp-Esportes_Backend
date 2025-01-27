@@ -151,9 +151,7 @@ class ProductController extends Controller {
 
         $product = $this->productService->findById($id);
 
-        return [
-            "product" => $product,
-        ];
+        return [$product];
     }
 
     public function searchWithPagination() {
