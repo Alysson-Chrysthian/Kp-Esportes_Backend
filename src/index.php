@@ -14,7 +14,7 @@ $cors = new Cors;
 
 $cors->setAllowedMethods("*");
 $cors->setAllowedHeaders("*");
-$cors->setAllowedOrigin("*");
+$cors->setAllowedOrigin(Env::get("FRONTEND_URL"));
 
 $cors->configure();
 
