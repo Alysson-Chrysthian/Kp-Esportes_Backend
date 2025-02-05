@@ -68,6 +68,11 @@ class Validator {
             throw new Exception("O campo $field_name precisa ser um numero maior do que $min_length");
     }
 
+    protected function min_char(mixed $value, string $field_name, int $min_lenght) {
+        if (strlen((string) $value) < $min_lenght) 
+            throw new Exception("O campo $field_name precisa ter no minimo $min_lenght caracteres");
+    }
+
     protected function max(mixed $value, string $field_name, int $max_length) {
         if (is_array($value) && count($value) > $max_length)
             throw new Exception("O campo $field_name pode ter no maximo $max_length itens");
@@ -75,6 +80,11 @@ class Validator {
             throw new Exception("O campo $field_name precisa ter no minimo $max_length caracters");
         if (is_numeric($value) && $value > $max_length)
             throw new Exception("O campo $field_name precisa ser um numero maior do que $max_length");
+    }
+
+    protected function max_char(mixed $value, string $field_name, int $max_length) {
+        if (strlen((string) $value) > $max_length)
+            throw new Exception("O campo $field_name deve ter no maximo $max_length caracters");
     }
 
     protected function unique(mixed $value, string $field_name, string $table, string $column_name, string $exception_column=null, mixed $exception_value=null) {

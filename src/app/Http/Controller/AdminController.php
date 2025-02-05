@@ -29,8 +29,8 @@ class AdminController extends Controller {
     public function sendValidationMail() {
         Validator::validate([
             "email" => ["required", "email", "exist:admins,email"],
-            "name" => ["required", "min:3", "max:20", "exist:admins,name"],
-            "password" => ["required", "min:8", "max:16", "exist:admins,password"],
+            "name" => ["required", "min_char:3", "max_char:20", "exist:admins,name"],
+            "password" => ["required", "min_char:8", "max_char:16", "exist:admins,password"],
         ]);
 
         if (!$this->adminService->existWhere("email = :email AND name = :name AND password = :password", [
