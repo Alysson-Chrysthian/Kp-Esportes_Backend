@@ -2,4 +2,4 @@
 *vendor
 *uploads
 .vercel
-.env
+.env*
