@@ -1,6 +1,15 @@
 <h1>KpEsportes</h1>
 Esse projeto é um freela fruto de uma parceria entre eu e meu amigo Lucas_Paz, onde eu (Alysson) fiquei responsavel pelo backend da aplicaçao e o lucas ficou responsavel pelo frontend. a aplicaçao é uma loja virtual de calçados KpEsportes, que possui uma loja fisica localizada em Jucás, Carius.
 
+<h1>How to run</h1>
+A aplicação funciona inteiramente em ambiente docker, então logo após clonar o repositorio na sua maquina, rode o seguinte comando para inicializar o ambiente
+
+``` ruby
+docker compose up -d --build
+```
+O comando a cima so funcionara caso o docker o esteja instalado na sua maquina, os argumentos -d e --build são opcionais.<br>
+lembrando que para rodar o projeto é necessario um arquivo .env no diretorio src do projeto que deve possuir as variais de ambiente que estão presente no .env.example
+
 <h1>Database Docs</h1>
 <h2>Model Entidade Relacionamento (MER)</h2>
 <img src="./docs/db/KpEsportes_DB_MER.png" />
